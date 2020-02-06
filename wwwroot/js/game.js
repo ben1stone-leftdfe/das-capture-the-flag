@@ -37,7 +37,12 @@ connection.on("StartGame", () => {
 
 
 
-connection.on("PlayerReady", function (player) {
+connection.on("PlayerReady", function (playerOne , playerTwo) {
+   
+    document.getElementById("waiting-for-player-message-1").hidden = playerOne;
+
+    document.getElementById("waiting-for-player-message-2").hidden = playerTwo;
+    
     console.log("Player Ready: " + player)
 })
 
