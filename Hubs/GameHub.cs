@@ -12,7 +12,7 @@ namespace DAS_Capture_The_Flag.Hubs
     public interface IGameClient
     {
         Task StartGame();
-        Task PlayerReady(string player);
+        Task PlayerReady(bool playerOne, bool playerTwo);
         Task AwaitPlayersReady();
         Task UpdatePlayerReady();
         Task OpponentReady();
@@ -41,19 +41,23 @@ namespace DAS_Capture_The_Flag.Hubs
                 _repository.Games.Add(game);
             }
 
+            await Groups.AddToGroupAsync(Context.ConnectionId, game.GameId);
+
             if (game.Player1.ConnectionId == null)
             {
                 game.Player1.ConnectionId = Context.ConnectionId;
+                
+                //await Clients.Client(game.Player2.ConnectionId).PlayerReady("player-one");
                 game.PlayersConnected = GetPlayersConnected(game);
             }
             else
             {
                 game.Player2.ConnectionId = Context.ConnectionId;
+               
                 game.PlayersConnected = GetPlayersConnected(game);
             }
 
-            await Groups.AddToGroupAsync(Context.ConnectionId, game.GameId);
-            await Clients.Group(game.GameId).PlayerReady("player ready");
+            await Clients.Group(game.GameId).PlayerReady(game.Player1.ConnectionId != null, game.Player2.ConnectionId != null);
 
             await base.OnConnectedAsync();
 
