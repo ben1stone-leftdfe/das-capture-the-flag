@@ -3,34 +3,42 @@
     ViewData["Title"] = "Index";
 }
 
+<h3>
+    <div id="write">
+        <script>document.getElementById("write").innerHTML = window.location.search.replace("?Nickname=", "Welcome: ")</script>
+    </div>
+</h3>
+
+<p></p>
 <h1>Finding game</h1>
+<p></p>
 
 <div class="row">
     <div class="col-6">
         <div id="player1" class="player-container">
+            <p></p>
             <h2> Player 1 </h2>
-
+            @*<h3><div id="write"></div></h3>*@
+            <p></p>
             <div id="waiting-for-player-message-1">
                 <p> Waiting for an opponent</p>
             </div>
         </div>
-
-    </div>
+        </div>
 
     <div class="col-6">
         <div id="player2" class="player-container">
             <h2> Player 2 </h2>
-
             <div id="waiting-for-player-message-2">
                 <p> Waiting for an opponent</p>
             </div>
         </div>
     </div>
+    <p></p>
 
     <div id="opponent-ready-message" hidden> <p> Opponent Ready! </p></div>
-    <button id="start-button" disabled > Start Game</button>
+    <button id="start-button" disabled> Start Game</button>
 </div>
-
 
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>

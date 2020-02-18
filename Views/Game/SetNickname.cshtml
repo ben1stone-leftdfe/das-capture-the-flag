@@ -1,0 +1,24 @@
+﻿
+@{
+}
+
+<body>
+    <div class="text-left">
+        <h1 class="display-4">Welcome to Capture the Flag</h1>
+        <p></p>
+        <div>
+            <form asp-controller="Game" asp-action="FindGame" method="GET">
+                <h4>To begin a new game choose a nickname.</h4>
+                <p></p>
+                <div>
+                    <input type="text" class="form-control"
+                           placeholder="Player nickname" required pattern="[a-zA-Z0-9-]+"
+                           minlength="3" maxlength="15"
+                           title="Nickname must be between 4 - 15 characters, only alphabetical and numeric characters accepted."
+                           style="width: 300px;"/>
+                    <input type="submit" value="Find a new game">
+                </div>
+            </form>
+        </div>
+    </div>
+</body>

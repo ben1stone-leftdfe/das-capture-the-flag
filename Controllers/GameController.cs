@@ -29,6 +29,11 @@ namespace DAS_Capture_The_Flag.Controllers
             return View();
         }
 
+        public IActionResult SetNickname() // --TEMP
+        { 
+            return View();
+        }
+
         public IActionResult FindGame()
         {
             return View();
