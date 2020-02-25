@@ -4,27 +4,27 @@
 }
 
 <h3>
+    Welcome: 
     <div id="write">
-        <script>document.getElementById("write").innerHTML = window.location.search.replace("?Nickname=", "Welcome: ")</script>
+        <script>var nickName = document.getElementById("write").innerHTML = window.location.search.slice(10)</script>
     </div>
+    @*<script>document.getElementById("write").innerHTML = window.location.search.replace("?Nickname=", "Welcome: ")</script>*@
 </h3>
 
 <p></p>
 <h1>Finding game</h1>
-<p></p>
 
 <div class="row">
     <div class="col-6">
         <div id="player1" class="player-container">
             <p></p>
             <h2> Player 1 </h2>
-            @*<h3><div id="write"></div></h3>*@
             <p></p>
             <div id="waiting-for-player-message-1">
                 <p> Waiting for an opponent</p>
             </div>
         </div>
-        </div>
+    </div>
 
     <div class="col-6">
         <div id="player2" class="player-container">
