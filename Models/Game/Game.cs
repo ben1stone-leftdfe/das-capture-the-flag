@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DAS_Capture_The_Flag.Models.Game
 {
-    public class Game
+    public class Game : PageModel
     {
         public string GameId { get; set; }
         public Player Player1 { get; set; }
@@ -30,6 +31,7 @@ namespace DAS_Capture_The_Flag.Models.Game
                 { "grass", "grass", "grass", "grass", "grass"}
               };
         }
+
         public bool HasPlayer(string connectionId)
         {
             if (Player1 != null && Player1.ConnectionId == connectionId)
@@ -43,5 +45,9 @@ namespace DAS_Capture_The_Flag.Models.Game
             return false;
         }
 
+        public void AddToSession(string key, string value)
+        {
+            HttpContext.Session.SetString(key, value);
+        }
     }
 }

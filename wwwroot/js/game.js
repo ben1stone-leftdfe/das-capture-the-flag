@@ -49,4 +49,3 @@ connection.on("PlayerReady", function (playerOne , playerTwo) {
 connection.on("OpponentReady", () => {
     document.getElementById("opponent-ready-message").removeAttribute("hidden");
 })
-

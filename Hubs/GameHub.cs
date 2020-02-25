@@ -17,8 +17,8 @@ namespace DAS_Capture_The_Flag.Hubs
         Task UpdatePlayerReady();
         Task OpponentReady();
         Task DrawMap(string[,] chosenMap);
-   
     }
+
     public class GameHub : Hub<IGameClient>
     {
 
@@ -46,27 +46,29 @@ namespace DAS_Capture_The_Flag.Hubs
             if (game.Player1.ConnectionId == null)
             {
                 game.Player1.ConnectionId = Context.ConnectionId;
-                
+
                 //await Clients.Client(game.Player2.ConnectionId).PlayerReady("player-one");
                 game.PlayersConnected = GetPlayersConnected(game);
             }
             else
             {
                 game.Player2.ConnectionId = Context.ConnectionId;
-               
+
                 game.PlayersConnected = GetPlayersConnected(game);
             }
 
-            await Clients.Group(game.GameId).PlayerReady(game.Player1.ConnectionId != null, game.Player2.ConnectionId != null);
+            await Clients.Group(game.GameId)
+                .PlayerReady(game.Player1.ConnectionId != null, game.Player2.ConnectionId != null);
 
             await base.OnConnectedAsync();
+
 
             if (game.PlayersConnected)
             {
                 await Clients.Group(game.GameId).AwaitPlayersReady();
             }
-
         }
+
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
@@ -123,7 +125,8 @@ namespace DAS_Capture_The_Flag.Hubs
 
             return false;
         }
-        private Player GetPlayer(Game game,string id)
+
+        private Player GetPlayer(Game game, string id)
         {
             if (game.Player1.ConnectionId == id)
             {
@@ -139,6 +142,7 @@ namespace DAS_Capture_The_Flag.Hubs
             {
                 return game.Player1;
             }
+
             return game.Player2;
         }
     }

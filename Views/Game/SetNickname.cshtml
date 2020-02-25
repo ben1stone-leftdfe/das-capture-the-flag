@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+@model DAS_Capture_The_Flag.ViewModels.SetNickNameViewModel;
+@{
+    ViewData["Title"] = "Index";
+}
+
+<body>
+<div class="text-left">
+    <h1 class="display-4">Welcome to Capture the Flag</h1>
+    <p></p>
+    <div>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            @foreach (KeyValuePair<string, ModelStateEntry> kvp in ViewData.ModelState)
+            {
+                @if (kvp.Value.Errors.Any())
+                {
+                    <li>
+                        <a href="#@kvp.Key">@kvp.Value.Errors[0].ErrorMessage</a> @*linking error on page for future*@
+                    </li>
+                }
+            }
+        }
+        <form asp-controller="Game" asp-action="SetNicknamePost" method="post">
+            <h4>To begin a new game choose a nickname.</h4>
+            <p></p>
+            <input type="text" class="form-control" asp-for="Nickname"
+                   style="width: 300px;" />
+            <p></p>
+            <input type="submit" value="Find a new game">
+        </form>
+    </div>
+</div>
+</body>

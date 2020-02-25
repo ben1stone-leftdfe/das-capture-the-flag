@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAS_Capture_The_Flag.ViewModels;
+using DAS_Capture_The_Flag.Views.Game;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DAS_Capture_The_Flag.Controllers
@@ -26,6 +28,25 @@ namespace DAS_Capture_The_Flag.Controllers
 
             //return View(game);
 
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetNicknamePost(SetNickNameViewModel vm) { 
+           // var view = viewmodel;
+           if (!ModelState.IsValid)
+           {
+               return View("SetNickname");
+
+            }
+
+           return RedirectToAction("FindGame", "Game",);
+           // return View();
+        }
+
+        [HttpGet]
+        public IActionResult SetNickname()
+        {
             return View();
         }
 
