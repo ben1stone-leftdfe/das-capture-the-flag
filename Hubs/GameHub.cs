@@ -11,7 +11,7 @@ namespace DAS_Capture_The_Flag.Hubs
 
     public interface IGameClient
     {
-        Task StartGame();
+        Task StartGame(string gameId, string playerId);
         Task PlayerReady(bool playerOne, bool playerTwo);
         Task AwaitPlayersReady();
         Task UpdatePlayerReady();
@@ -91,7 +91,8 @@ namespace DAS_Capture_The_Flag.Hubs
 
             if (GetPlayersReady(game))
             {
-                await Clients.Group(game.GameId).StartGame();
+                await Clients.Group(game.GameId).StartGame(game.GameId.ToString(), Context.ConnectionId.ToString());
+                await Clients.
                 await DrawMap(game);
             }
             else
