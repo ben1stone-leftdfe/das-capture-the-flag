@@ -8,6 +8,6 @@ namespace DAS_Capture_The_Flag.Hubs
 {
     public class GameplayHub : Hub<IGameClient>
     {
-
+        
     }
 }

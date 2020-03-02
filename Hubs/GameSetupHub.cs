@@ -16,56 +16,52 @@ namespace DAS_Capture_The_Flag.Hubs
         Task AwaitPlayersReady();
         Task UpdatePlayerReady();
         Task OpponentReady();
-        Task DrawMap(string[,] chosenMap);
     }
 
-    public class GameHub : Hub<IGameClient>
+    public class GameSetupHub : Hub<IGameClient>
     {
 
         private IGameRepository _repository;
 
-        public GameHub(IGameRepository repository)
+        public GameSetupHub(IGameRepository repository)
         {
             _repository = repository;
         }
 
         public override async Task OnConnectedAsync()
         {
-            var game = _repository.Games.FirstOrDefault(g => !g.PlayersConnected);
+            var game = _repository.Games.FirstOrDefault(g => !g.Setup.PlayersConnected);
 
             if (game == null)
             {
                 game = new Game();
-                game.GameId = Guid.NewGuid().ToString();
+                game.Setup = new GameSetup();
 
                 _repository.Games.Add(game);
             }
 
-            await Groups.AddToGroupAsync(Context.ConnectionId, game.GameId);
+            await Groups.AddToGroupAsync(Context.ConnectionId, game.Setup.GameId);
 
-            if (game.Player1.ConnectionId == null)
+            if (game.Setup.Player1.ConnectionId == null)
             {
-                game.Player1.ConnectionId = Context.ConnectionId;
-
-                //await Clients.Client(game.Player2.ConnectionId).PlayerReady("player-one");
-                game.PlayersConnected = GetPlayersConnected(game);
+                game.Setup.Player1.ConnectionId = Context.ConnectionId;
+                game.Setup.PlayersConnected = GetPlayersConnected(game.Setup);
             }
             else
             {
-                game.Player2.ConnectionId = Context.ConnectionId;
-
-                game.PlayersConnected = GetPlayersConnected(game);
+                game.Setup.Player2.ConnectionId = Context.ConnectionId;
+                game.Setup.PlayersConnected = GetPlayersConnected(game.Setup);
             }
 
-            await Clients.Group(game.GameId)
-                .PlayerReady(game.Player1.ConnectionId != null, game.Player2.ConnectionId != null);
+            await Clients.Group(game.Setup.GameId)
+                .PlayerReady(game.Setup.Player1.ConnectionId != null, game.Setup.Player2.ConnectionId != null);
 
             await base.OnConnectedAsync();
 
 
-            if (game.PlayersConnected)
+            if (game.Setup.PlayersConnected)
             {
-                await Clients.Group(game.GameId).AwaitPlayersReady();
+                await Clients.Group(game.Setup.GameId).AwaitPlayersReady();
             }
         }
 
@@ -83,31 +79,28 @@ namespace DAS_Capture_The_Flag.Hubs
         public async Task UpdatePlayerReady()
         {
             var repo = _repository;
-            var game = _repository.Games.FirstOrDefault(g => g.HasPlayer(Context.ConnectionId));
+            var game = _repository.Games.FirstOrDefault(g => g.Setup.HasPlayer(Context.ConnectionId));
 
-            var player = GetPlayer(game, Context.ConnectionId);
+            var player = GetPlayer(game.Setup, Context.ConnectionId);
 
             player.Ready = true;
 
-            if (GetPlayersReady(game))
+            if (GetPlayersReady(game.Setup))
             {
-                await Clients.Group(game.GameId).StartGame(game.GameId.ToString(), Context.ConnectionId.ToString());
-                await Clients.
-                await DrawMap(game);
+                await Clients.Client(game.Setup.Player1.ConnectionId).StartGame(game.Setup.GameId.ToString(), game.Setup.Player1.ConnectionId.ToString());
+
+                await Clients.Client(game.Setup.Player2.ConnectionId).StartGame(game.Setup.GameId.ToString(), game.Setup.Player2.ConnectionId.ToString());
+
             }
             else
             {
-                var otherPlayer = GetOpponent(game, Context.ConnectionId);
+                var otherPlayer = GetOpponent(game.Setup, Context.ConnectionId);
                 await Clients.Client(otherPlayer.ConnectionId).OpponentReady();
             }
         }
 
-        public async Task DrawMap(Game game)
-        {
-            await Clients.Group(game.GameId).DrawMap(game.ChosenMap);
-        }
-
-        private bool GetPlayersConnected(Game game)
+       
+        private bool GetPlayersConnected(GameSetup game)
         {
             if (game.Player1.ConnectionId != null && game.Player2.ConnectionId != null)
             {
@@ -117,7 +110,7 @@ namespace DAS_Capture_The_Flag.Hubs
             return false;
         }
 
-        private bool GetPlayersReady(Game game)
+        private bool GetPlayersReady(GameSetup game)
         {
             if (game.Player1.Ready && game.Player2.Ready)
             {
@@ -127,7 +120,7 @@ namespace DAS_Capture_The_Flag.Hubs
             return false;
         }
 
-        private Player GetPlayer(Game game, string id)
+        private Player GetPlayer(GameSetup game, string id)
         {
             if (game.Player1.ConnectionId == id)
             {
@@ -137,7 +130,7 @@ namespace DAS_Capture_The_Flag.Hubs
             return game.Player2;
         }
 
-        private Player GetOpponent(Game game, string id)
+        private Player GetOpponent(GameSetup game, string id)
         {
             if (game.Player1.ConnectionId != id)
             {

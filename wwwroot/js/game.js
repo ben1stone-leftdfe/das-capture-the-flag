@@ -1,7 +1,6 @@
 ﻿"use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
-//connection = new signalR.HubConnectionBuilder().connection()
 
 connection.start().then(function () {
     console.log("Starting connection");
@@ -31,12 +30,9 @@ connection.on("AwaitPlayersReady", () => {
 
 connection.on("StartGame",  function( gameId, playerId ){
     console.log("Both players ready");
-    window.location.href = "https://localhost:44353/Game/Index/"+gameId+"/"+playerId;
+    window.location.href = "https://localhost:44353/Game/Index?game="+gameId+"&player="+playerId;
     console.log("Redirected")
 })
-
-
-
 
 connection.on("PlayerReady", function (playerOne , playerTwo) {
    

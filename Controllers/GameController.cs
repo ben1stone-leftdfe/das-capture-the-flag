@@ -14,7 +14,6 @@ namespace DAS_Capture_The_Flag.Controllers
             return View();
         }
 
-        [HttpGet("{gameId}/{playerId}")]
         public IActionResult Index(string gameId, string playerId)
         {
             //var map = new Map();
@@ -32,13 +31,9 @@ namespace DAS_Capture_The_Flag.Controllers
 
             //return View(game);
 
-            return View();
+            return View("~/Views/Game/Index.cshtml");
         }
 
-        [HttpGet]
-        public IActionResult SetNickname()
-        {
-            return View();
-        }
+        
     }
 }
