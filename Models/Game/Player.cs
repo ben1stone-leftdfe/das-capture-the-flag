@@ -10,6 +10,7 @@ namespace DAS_Capture_The_Flag.Models.Game
         public string Name { get; set; }
         public string ConnectionId { get; set; }
         public bool Ready { get; set; }
+        public int Number { get; set; }
         
     }
 }

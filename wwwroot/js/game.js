@@ -34,7 +34,13 @@ connection.on("StartGame", () => {
     console.log("Redirected")
 })
 
+connection.on("OpponentLeftLobby", function() {
+    console.log("Opponent left");
 
+
+    var StartButton = document.getElementById("start-button");
+    StartButton.disabled = true;
+})
 
 
 connection.on("PlayerReady", function (playerOne , playerTwo) {
