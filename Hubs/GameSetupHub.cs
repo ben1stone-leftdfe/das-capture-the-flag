@@ -65,7 +65,36 @@ namespace DAS_Capture_The_Flag.Hubs
             }
         }
 
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            // Handle Disconnections
+            Game game = (Game)_repository.Games.FirstOrDefault(g => g.Players[0].ConnectionId == Context.ConnectionId || g.Players[1].ConnectionId == Context.ConnectionId);
 
+            Player player = game.Players.Where(x => x.ConnectionId == Context.ConnectionId).FirstOrDefault();
+            Player opponent = game.Players.Where(x => x.ConnectionId != Context.ConnectionId).FirstOrDefault();
+
+            player.ConnectionId = null;
+            player.Ready = false;
+            player.Name = null;
+            game.PlayersConnected = false;
+
+            await Clients.Client(opponent.ConnectionId).OpponentLeftLobby();
+            await Clients.Group(game.GameId).PlayerReady(game.Players[0].ConnectionId != null, game.Players[1].ConnectionId != null);
+
+
+        }
+
+        private Player GetPlayerFromId(Game game, string connectionId)
+        {
+            if (game.Players[0].ConnectionId == connectionId)
+            {
+                return game.Players[0];
+            }
+            else
+            {
+                return game.Players[1];
+            }
+        }
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             // Handle Disconnections
