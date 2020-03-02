@@ -1,0 +1,21 @@
+diff a/Models/Game/Player.cs b/Models/Game/Player.cs	(rejected hunks)
+@@ -1,15 +1,16 @@
+ ﻿using System;
+ using System.Collections.Generic;
+-using System.Linq;
+-using System.Threading.Tasks;
++using System.ComponentModel.DataAnnotations;
+ 
+ namespace DAS_Capture_The_Flag.Models.Game
+ {
+     public class Player
+     {
++        [StringLength(15)]
++        [Required(ErrorMessage = "Please enter a nickname to begin.")]
++        [Display(Name = "Choose a nickname")]
+         public string Name { get; set; }
+         public string ConnectionId { get; set; }
+         public bool Ready { get; set; }
+-        
+     }
+ }
