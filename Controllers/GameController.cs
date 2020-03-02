@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAS_Capture_The_Flag.ViewModels;
-using DAS_Capture_The_Flag.Views.Game;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DAS_Capture_The_Flag.Controllers
 {
     public class GameController : Controller
     {
-        
-        public IActionResult Index()
+        public IActionResult FindGame()
+        {
+            return View();
+        }
+
+        public IActionResult Index(string gameId, string playerId)
         {
             //var map = new Map();
 
@@ -28,31 +31,9 @@ namespace DAS_Capture_The_Flag.Controllers
 
             //return View(game);
 
-            return View();
+            return View("~/Views/Game/Index.cshtml");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SetNicknamePost(SetNickNameViewModel vm) { 
-           // var view = viewmodel;
-           if (!ModelState.IsValid)
-           {
-               return View("SetNickname");
-
-            }
-
-           return RedirectToAction("FindGame", "Game",);
-           // return View();
-        }
-
-        [HttpGet]
-        public IActionResult SetNickname()
-        {
-            return View();
-        }
-
-        public IActionResult FindGame()
-        {
-            return View();
-        }
+        
     }
 }
