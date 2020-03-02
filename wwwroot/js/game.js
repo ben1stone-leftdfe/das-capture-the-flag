@@ -34,6 +34,15 @@ connection.on("StartGame",  function( gameId, playerId ){
     console.log("Redirected")
 })
 
+connection.on("OpponentLeftLobby", function() {
+    console.log("Opponent left");
+
+
+    var StartButton = document.getElementById("start-button");
+    StartButton.disabled = true;
+})
+
+
 connection.on("PlayerReady", function (playerOne , playerTwo) {
    
     document.getElementById("waiting-for-player-message-1").hidden = playerOne;
