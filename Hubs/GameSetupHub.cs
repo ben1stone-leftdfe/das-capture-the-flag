@@ -108,6 +108,7 @@ namespace DAS_Capture_The_Flag.Hubs
 
             if (GetPlayersReady(game.Setup))
             {
+                await Clients.Client(game.Setup.Players[0].ConnectionId).StartGame(game.Setup.GameId.ToString(), game.Setup.Players[0].ConnectionId.ToString());
                 await Clients.Client(game.Setup.Players[1].ConnectionId).StartGame(game.Setup.GameId.ToString(), game.Setup.Players[1].ConnectionId.ToString());
 
             }
