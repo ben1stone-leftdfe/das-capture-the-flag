@@ -57,7 +57,8 @@ namespace DAS_Capture_The_Flag
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapHub<GameHub>("/gamehub");
+               
+                endpoints.MapHub<GameSetupHub>("/gamehub");
             });
         }
     }

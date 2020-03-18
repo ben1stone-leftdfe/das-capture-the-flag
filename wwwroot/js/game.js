@@ -28,13 +28,19 @@ connection.on("AwaitPlayersReady", () => {
     StartButton.removeAttribute('disabled')
 })
 
-connection.on("StartGame", () => {
+connection.on("StartGame",  function( gameId, playerId ){
     console.log("Both players ready");
-    window.location.href = "https://localhost:44353/Game/Index";
+    window.location.href = "https://localhost:44353/Game/Index?game="+gameId+"&player="+playerId;
     console.log("Redirected")
 })
 
+connection.on("OpponentLeftLobby", function() {
+    console.log("Opponent left");
 
+
+    var StartButton = document.getElementById("start-button");
+    StartButton.disabled = true;
+})
 
 
 connection.on("PlayerReady", function (playerOne , playerTwo) {

@@ -5,13 +5,9 @@ using System.Threading.Tasks;
 
 namespace DAS_Capture_The_Flag.Models.Game
 {
-    public class Game
+    public enum PlayerEnum
     {
-        public GameSetup Setup { get; set; }
-
-        public Game()
-        {
-
-        }
+        One = 0,
+        Two = 1
     }
 }

@@ -5,13 +5,9 @@ using System.Threading.Tasks;
 
 namespace DAS_Capture_The_Flag.Models.Game
 {
-    public class Game
+    public class Players
     {
-        public GameSetup Setup { get; set; }
-
-        public Game()
-        {
-
-        }
+        public Player Player1 { get; set; }
+        public Player Player2 { get; set; }
     }
 }
